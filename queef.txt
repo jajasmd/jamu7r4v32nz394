@@ -1,20 +1,690 @@
-!K%Z"/R5$DE"|IK4
-5O&UF}>UBZ"#\({4
-IUX<KVF=J?P/K^[>
-ING)@(<9}3'=$\@S
-G[:{__399V0&_'5^
-DXC"WB`H,70U*)*;
-$|>=]]YGT7B/3A.B
-^<?T"0(H!@L=1^+[
-`/Z+(ZJ,\<['ELCS
-F.X540`N&'-ZP{\S
-T][YP!BN7A~Z:B0J
-_S+B(\""137X`$R]
-T@|F&\};!RPRYV,^
-8D:GCPR)%$H|%E*J
-T54:,&)*$C',(D`^
-725+@)AT*}8[:*W>
-T4\_@OR<,*X39Z$Y
-61S_*~`.F2!;Q3T(
-.{%SV+U:IBD^.7M2
-GabeNJamesKey14
+local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
+
+local Window = Rayfield:CreateWindow({
+    Name = "Solar Hub",
+    LoadingTitle = "Loading...",
+    LoadingSubtitle = "6znu & GabeSolarCheats",
+    ConfigurationSaving = {
+        Enabled = false, -- Set to true if you want to save configurations
+        FolderName = nil, -- Create a custom folder for your hub/game
+        FileName = "Solar Hub"
+    },
+    Discord = {
+        Enabled = true,
+        Invite = "CHEpntzmu7", -- The Discord invite code, do not include discord.gg/. E.g. discord.gg/ABCD would be ABCD
+        RememberJoins = true -- Set this to false to make them join the discord every time they load it up
+    },
+    KeySystem = false, -- Set this to true to use our key system
+    KeySettings = {
+        Title = "Key | Solar Cheats",
+        Subtitle = "Key System",
+        Note = "Key In Discord Server",
+        FileName = "YoutubeHubKey1", -- It is recommended to use something unique as other scripts using Rayfield may overwrite your key file
+        SaveKey = false, -- The user's key will be saved, but if you change the key, they will be unable to use your script
+        GrabKeyFromSite = false, -- If this is true, set Key below to the RAW site you would like Rayfield to get the key from
+        Key = {"SolarHubX123", "SH4Energy789", "SunPower0012", "LitePanel5K9", "S0larGrid888", "HubSun202305", "SolTech1122", "SolarNet660", "SUNhub40392", "SolarXpert8Z", "SunLight703", "SolarNow099", "Hub0fSun321", "SolarMax7777", "PowerHub92Z3", "SunVolt6620", "HubSolar0913", "S0larEng555", "SHBright9999"} -- List of keys that will be accepted by the system, can be RAW file links (pastebin, github etc) or simple strings ("hello","key22")
+    }
+})
+
+local MainTab = Window:CreateTab("🏠 Home", nil) -- Title, Image
+local MainSection = MainTab:CreateSection("Main")
+
+Rayfield:Notify({
+    Title = "Welcome To Solar Hub!",
+    Content = "enjoy...",
+    Duration = 5,
+    Image = 13047715178,
+    Actions = { -- Notification Buttons
+        Ignore = {
+            Name = "Okay!",
+            Callback = function()
+                print("The user tapped Okay!")
+            end
+        },
+    },
+})
+
+local infiniteJumpEnabled = false
+local infiniteJumpConnection = nil
+
+local infiniteJumpButton = MainTab:CreateButton({
+    Name = "Infinite Jump Toggle",
+    Callback = function()
+        infiniteJumpEnabled = not infiniteJumpEnabled
+
+        if infiniteJumpEnabled then
+            game.StarterGui:SetCore("SendNotification", {Title="Solar Hub"; Text="Infinite Jump Activated!"; Duration=5;})
+
+            local plr = game:GetService('Players').LocalPlayer
+            local m = plr:GetMouse()
+
+            -- Disconnect previous connection if it exists
+            if infiniteJumpConnection then
+                infiniteJumpConnection:Disconnect()
+            end
+
+            infiniteJumpConnection = m.KeyDown:Connect(function(k)
+                if infiniteJumpEnabled then
+                    if k:byte() == 32 then
+                        local humanoid = game:GetService('Players').LocalPlayer.Character:FindFirstChildOfClass('Humanoid')
+                        if humanoid then
+                            humanoid:ChangeState('Jumping')
+                        end
+                    end
+                end
+            end)
+        else
+            game.StarterGui:SetCore("SendNotification", {Title="Solar Hub"; Text="Infinite Jump Deactivated!"; Duration=5;})
+            if infiniteJumpConnection then
+                infiniteJumpConnection:Disconnect()
+                infiniteJumpConnection = nil
+            end
+        end
+    end,
+})
+
+local walkspeedSlider = MainTab:CreateSlider({
+    Name = "WalkSpeed Slider",
+    Range = {1, 350},
+    Increment = 1,
+    Suffix = "Speed",
+    CurrentValue = 16,
+    Flag = "sliderws", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+    Callback = function(Value)
+        local player = game.Players.LocalPlayer
+        if player and player.Character and player.Character:FindFirstChildOfClass("Humanoid") then
+            player.Character.Humanoid.WalkSpeed = Value
+        end
+    end,
+})
+
+local jumpPowerSlider = MainTab:CreateSlider({
+    Name = "JumpPower Slider",
+    Range = {1, 350},
+    Increment = 1,
+    Suffix = "Power", -- Changed suffix for clarity
+    CurrentValue = 16,
+    Flag = "sliderjp", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+    Callback = function(Value)
+        local player = game.Players.LocalPlayer
+        if player and player.Character and player.Character:FindFirstChildOfClass("Humanoid") then
+            player.Character.Humanoid.JumpPower = Value
+        end
+    end,
+})
+
+local characterSelectionButton = MainTab:CreateButton({
+    Name = "Jerk Off", -- Renamed for clarity
+    Callback = function()
+        -- Create GUI
+        local screenGui = Instance.new("ScreenGui", game.Players.LocalPlayer:WaitForChild("PlayerGui"))
+        screenGui.Name = "RSelectionGUI"
+
+        local function createButton(name, position, text)
+            local btn = Instance.new("TextButton")
+            btn.Name = name
+            btn.Size = UDim2.new(0, 150, 0, 50)
+            btn.Position = position
+            btn.Text = text
+            btn.Font = Enum.Font.GothamBold
+            btn.TextSize = 20
+            btn.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
+            btn.TextColor3 = Color3.fromRGB(255, 255, 255)
+            btn.BorderSizePixel = 0
+            btn.AutoButtonColor = true
+            btn.Parent = screenGui
+            return btn
+        end
+
+        -- R15 Button
+        local r15Button = createButton("R15Button", UDim2.new(0.35, 0, 0.4, 0), "Use R15")
+        -- R6 Button
+        local r6Button = createButton("R6Button", UDim2.new(0.35, 0, 0.5, 0), "Use R6")
+
+        -- Function to execute script based on choice
+        local function executeChoice(isR15)
+            screenGui:Destroy() -- Remove the GUI
+
+            if isR15 then
+                print("R15 selected! Running R15 script...")
+                game.StarterGui:SetCore("ChatMakeSystemMessage", {
+                    Text = "You chose R15!";
+                    Color = Color3.fromRGB(0, 255, 0);
+                })
+                loadstring(game:HttpGet("https://pastefy.app/YZoglOyJ/raw", true))()
+            else
+                print("R6 selected! Running R6 script...")
+                game.StarterGui:SetCore("ChatMakeSystemMessage", {
+                    Text = "You chose R6!";
+                    Color = Color3.fromRGB(255, 165, 0);
+                })
+                loadstring(game:HttpGet("https://pastefy.app/wa3v2Vgm/raw", true))()
+            end
+        end
+
+        -- Connect buttons
+        r15Button.MouseButton1Click:Connect(function()
+            executeChoice(true)
+        end)
+
+        r6Button.MouseButton1Click:Connect(function()
+            executeChoice(false)
+        end)
+    end,
+})
+
+local infiniteYieldButton = MainTab:CreateButton({
+    Name = "Infinite Yield",
+    Callback = function()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/EdgeIY/infiniteyield/master/source", true))()
+    end,
+})
+
+local OtherSection = MainTab:CreateSection("Other")
+
+local pointlessToggleButton = MainTab:CreateToggle({ -- Renamed for clarity
+    Name = "Turn Gay", -- Renamed for clarity
+    CurrentValue = false,
+    Flag = "Toggle1", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+    Callback = function(Value)
+ game.Players.LocalPlayer:Kick([[
+	 
+Your account has been suspended for violating the Roblox Terms of Use.
+
+Reason: Exploiting
+
+Ban Duration: 7 days
+Appeal at: https://www.roblox.com/support
+
+]])
+    end,
+})
+
+local PrisonLifeTab = Window:CreateTab("Prison Life", nil) -- Title, Image
+
+local prizzButton = PrisonLifeTab:CreateButton({ -- Unique variable name
+    Name = "Prizz",
+    Callback = function()
+        loadstring(game:HttpGet('https://raw.githubusercontent.com/devguy100/PrizzLife/main/Source/release_v0.8.1.lua', true))()
+    end,
+})
+
+local tbaoHubButton = PrisonLifeTab:CreateButton({ -- Unique variable name
+    Name = "Tbao Hub",
+    Callback = function()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/tbao143/thaibao/main/TbaohubPrisonLife", true))()
+    end,
+})
+
+local prisonLifeAdminButton = PrisonLifeTab:CreateButton({ -- Unique variable name
+    Name = "Prison Life Admin", -- Corrected spelling
+    Callback = function()
+        loadstring(game:HttpGet('https://pastebin.com/raw/iZ64yzjE', true))()
+    end,
+})
+
+local MM2Tab = Window:CreateTab("MM2", nil) -- Title, Image
+
+local mm2AdminButton = MM2Tab:CreateButton({ -- Unique variable name
+    Name = "MM2 Admin",
+    Callback = function()
+        loadstring(game:HttpGet('https://pastebin.com/raw/e89Mn4Ec', true))()
+    end,
+})
+
+local spaceHubButton = MM2Tab:CreateButton({ -- Unique variable name
+    Name = "Space Hub",
+    Callback = function()
+        loadstring(game:HttpGet('https://raw.githubusercontent.com/ago106/SpaceHub/refs/heads/main/Multi', true))()
+    end,
+})
+
+local xHubButton = MM2Tab:CreateButton({ -- Unique variable name
+    Name = "XHub",
+    Callback = function()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/CycleScripts/Official/refs/heads/main/freemium", true))()
+    end,
+})
+
+local kiciahookButton = MM2Tab:CreateButton({ -- Unique variable name
+    Name = "Kiciahook",
+    Callback = function()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/kiciahook/kiciahook/refs/heads/main/loader.lua", true))()
+    end,
+})
+
+local keylessMM2Button = MM2Tab:CreateButton({ -- Unique variable name
+    Name = "Keyless",
+    Callback = function()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/Joystickplays/psychic-octo-invention/main/yarhm.lua", true))()
+    end,
+})
+
+local expressHubButton = MM2Tab:CreateButton({ -- Unique variable name
+    Name = "Express Hub V2.2",
+    Callback = function()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/AscendFromHeaven/Kitsune-Hub/refs/heads/main/WhitelistMM2", true))()
+    end,
+})
+
+local solixHubButton = MM2Tab:CreateButton({ -- Unique variable name
+    Name = "Solix Hub",
+    Callback = function()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/debunked69/Solixreworkkeysystem/refs/heads/main/solix%20new%20keyui.lua", true))()
+    end,
+})
+
+local yHubMM2Button = MM2Tab:CreateButton({ -- Unique variable name
+    Name = "YHub",
+    Callback = function()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/Luarmor123/YHUB-Community/refs/heads/main/Murder-Mystery2", true))()
+    end,
+})
+
+local forgeHubButton = MM2Tab:CreateButton({ -- Unique variable name
+    Name = "Forge Hub",
+    Callback = function()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/Skzuppy/forge-hub/main/loader.lua", true))()
+    end,
+})
+
+local eclipseHubButton = MM2Tab:CreateButton({ -- Unique variable name
+    Name = "Eclipse Hub",
+    Callback = function()
+        -- Consider if you need to set mainKey here or if the loaded script handles it
+        local a,b,c,d,e=loadstring,request or http_request or (http and http.request) or (syn and syn.request),assert,tostring,"https\58//api.eclipsehub.xyz/auth";c(a and b,"Executor not Supported")a(b({Url=e.."\?\107e\121\61"..d(getgenv().mainKey or "nil"),Headers={["User-Agent"]="Eclipse"}}).Body)()
+    end,
+})
+
+local TowerOfHellTab = Window:CreateTab("Tower Of Hell", nil) -- Title, Image
+
+local getAllToolsButton = TowerOfHellTab:CreateButton({ -- Unique variable name
+    Name = "Get All Tools",
+    Callback = function()
+        local Rep = game:GetService("ReplicatedStorage")
+        local GearFolder = Rep:FindFirstChild('Gear')
+        local Players = game:GetService("Players")
+        local Player = Players.LocalPlayer
+        if GearFolder then
+            for _, v in pairs(GearFolder:GetChildren()) do
+                if v:IsA('Tool') then
+                    local clonedTool = v:Clone()
+                    clonedTool.Parent = Player.Backpack
+                end
+            end
+        end
+    end,
+})
+
+local saswareButton = TowerOfHellTab:CreateButton({ -- Unique variable name
+    Name = "Sasware",
+    Callback = function()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/centerepic/sasware_TowerOfHell/main/TowerOfHell_sw.lua", true))()
+    end,
+})
+
+local sprinhubButton = TowerOfHellTab:CreateButton({ -- Unique variable name
+    Name = "Sprinhub",
+    Callback = function()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/dqvh/dqvh/main/SprinHub", true))()
+    end,
+})
+
+local p1neLoaderButton = TowerOfHellTab:CreateButton({ -- Unique variable name
+    Name = "p1ne loader",
+    Callback = function()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/p1neru/tutor/main/p1ne-injector", true))()
+    end,
+})
+
+local minimalisticScriptButton = TowerOfHellTab:CreateButton({ -- Unique variable name
+    Name = "Milimialistic Script",
+    Callback = function()
+        loadstring(game:HttpGet('https://raw.githubusercontent.com/H17S32/Tiger_Admin/main/MAIN', true))()
+    end,
+})
+
+local yHubTOHButton = TowerOfHellTab:CreateButton({ -- Unique variable name
+    Name = "YHub",
+    Callback = function()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/Luarmor123/YHUB-Community/refs/heads/main/Tower-of-hell.lua", true))()
+    end,
+})
+
+local DressToImpressTab = Window:CreateTab("Dress To Impress", nil) -- Title, Image
+
+local moneyEspButton = DressToImpressTab:CreateButton({ -- Unique variable name
+    Name = "Money ESP",
+    Callback = function()
+        loadstring(game:HttpGetAsync("https://pastebin.com/raw/fvnaQ0a8", true))()
+    end,
+})
+
+local collectMoneyButton = DressToImpressTab:CreateButton({ -- Unique variable name
+    Name = "Collect Money",
+    Callback = function()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/ToraScript/Script/main/DressToImpress", true))()
+    end,
+})
+
+local nutHubDTIButton = DressToImpressTab:CreateButton({ -- Unique variable name
+    Name = "Nut Hub",
+    Callback = function()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/01iq/me/refs/heads/main/DressToImpress", true))()
+    end,
+})
+
+local neuronHubButton = DressToImpressTab:CreateButton({ -- Unique variable name
+    Name = "Neuron Hub",
+    Callback = function()
+        -- Note: This URL ends in .py, which suggests it might be a Python script.
+        -- loadstring in Roblox executes Lua. This might not work as intended.
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/Yumiara/Python/refs/heads/main/DTI.py", true))();
+    end,
+})
+
+local freeVipButton = DressToImpressTab:CreateButton({ -- Unique variable name
+    Name = "Free V.I.P",
+    Callback = function()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/hellohellohell012321/DTI-GUI-V2/main/dti_gui_v2.lua", true))()
+    end,
+})
+
+local tarikHubButton = DressToImpressTab:CreateButton({ -- Unique variable name
+    Name = "Tarik Hub",
+    Callback = function()
+        loadstring(game:HttpGet('https://raw.githubusercontent.com/DeNyima/TarikHUB/refs/heads/main/DressToImpress', true))()
+    end,
+})
+
+local dtiFuckerButton = DressToImpressTab:CreateButton({ -- Unique variable name
+    Name = "DTI Fucker", -- Renamed for clarity/appropriateness
+    Callback = function()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/hellohellohell012321/DTI-GUI-V2/main/dti_gui_v2.lua", true))()
+    end,
+})
+
+local simplisticHubButton = DressToImpressTab:CreateButton({ -- Unique variable name
+    Name = "Simplistic Hub",
+    Callback = function()
+        loadstring(game:HttpGet('https://raw.githubusercontent.com/pcallskeleton/simplest/main/simplicity.lua', true))()
+    end,
+})
+
+local BlueLockRivalsTab = Window:CreateTab("Blue Lock: Rivals", nil) -- Title, Image
+
+local alchemyHubButton = BlueLockRivalsTab:CreateButton({ -- Unique variable name
+    Name = "Alchemy Hub",
+    Callback = function()
+        loadstring(game:HttpGet("https://scripts.alchemyhub.xyz", true))()
+    end,
+})
+
+local dehismButton = BlueLockRivalsTab:CreateButton({ -- Unique variable name
+    Name = "Dehism",
+    Callback = function()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/dehism/Dehism/refs/heads/main/Inf%20Spins%20Auto%20Dehism", true))()
+    end,
+})
+
+local fullHubButton = BlueLockRivalsTab:CreateButton({ -- Unique variable name
+    Name = "Full Hub",
+    Callback = function()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/PresidentZuyi/S/refs/heads/main/FullHub", true))()
+    end,
+})
+
+local nicuseHubButton = BlueLockRivalsTab:CreateButton({ -- Unique variable name
+    Name = "Nicuse Hub",
+    Callback = function()
+        loadstring(game:HttpGet("https://nicuse.xyz/MainHub.lua", true))()
+    end,
+})
+
+local nsHubButton = BlueLockRivalsTab:CreateButton({ -- Unique variable name
+    Name = "NS Hub",
+    Callback = function()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/OhhMyGehlee/fo/refs/heads/main/ot", true))()
+    end,
+})
+
+local zeeHubButton = BlueLockRivalsTab:CreateButton({ -- Unique variable name
+    Name = "Zee Hub",
+    Callback = function()
+        loadstring(game:HttpGet("https://zuwz.xyz/ZEEHubVNBlueLock.lua", true))()
+    end,
+})
+
+local omgHubButton = BlueLockRivalsTab:CreateButton({ -- Unique variable name
+    Name = "OMG Hub",
+    Callback = function()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/Omgshit/Scripts/main/MainLoader.lua", true))()
+    end,
+})
+
+local sterlingHubButton = BlueLockRivalsTab:CreateButton({ -- Unique variable name
+    Name = "Sterling Hub",
+    Callback = function()
+        local GuiService = game:GetService("GuiService")
+        local Players = game:GetService("Players")
+        local TeleportService = game:GetService("TeleportService")
+        local player = Players.LocalPlayer
+        local function onerrorMessageChanged(errorMessage)
+            if errorMessage and errorMessage ~= "" then
+                print("Error detected: " .. errorMessage)
+                if player then
+                    TeleportService:Teleport(game.PlaceId, player)
+                end
+            end
+        end
+        GuiService.ErrorMessageChanged:Connect(onerrorMessageChanged)
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/Zayn31214/name/refs/heads/main/SterlingNew", true))()
+    end,
+})
+
+local billDevHubButton = BlueLockRivalsTab:CreateButton({ -- Unique variable name
+    Name = "Bill Dev Hub",
+    Callback = function()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/selciawashere/screepts/refs/heads/main/BLRTBDKEYSYS", true))()
+    end,
+})
+
+local overHubButton = BlueLockRivalsTab:CreateButton({ -- Unique variable name
+    Name = "Over Hub",
+    Callback = function()
+        loadstring(game:HttpGet('https://api.overhub.xyz/keys/script/overhub', true))()
+    end,
+})
+
+local getScriptButtonBLR = BlueLockRivalsTab:CreateButton({ -- Unique variable name
+    Name = "Get Script",
+    Callback = function()
+        loadstring(game:HttpGet(('https://pastefy.app/O3F7JYSF/raw'), true))()
+    end,
+})
+
+local executiveScriptButton = BlueLockRivalsTab:CreateButton({ -- Unique variable name
+    Name = "Executive Script",
+    Callback = function()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/Bhusant/Bathroom-attack/refs/heads/main/Bathroom", true))()
+    end,
+})
+
+local unamedBLRButton1 = BlueLockRivalsTab:CreateButton({ -- Unique variable name
+    Name = "Unamed 1", -- Renamed to differentiate
+    Callback = function()
+        loadstring(game:HttpGet(('https://pastefy.app/ZcC3BzKb/raw'), true))()
+    end,
+})
+
+local arbixHubButton = BlueLockRivalsTab:CreateButton({ -- Unique variable name
+    Name = "Arbix Hub",
+    Callback = function()
+        loadstring(game:HttpGet(('https://pastefy.app/lbLVUm8Z/raw'), true))()
+    end,
+})
+
+local dummyHubButton = BlueLockRivalsTab:CreateButton({ -- Unique variable name
+    Name = "Dummy Hub",
+    Callback = function()
+        loadstring(game:HttpGet(('https://pastefy.app/5i2DScDc/raw'), true))()
+    end,
+})
+
+local BasketballZeroTab = Window:CreateTab("Basketball: Zero", nil) -- Title, Image
+
+local shadowHubButton = BasketballZeroTab:CreateButton({ -- Unique variable name
+    Name = "Shadow Hub",
+    Callback = function()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/ShadowXScript/Shadow-Hub/refs/heads/main/BasketballZeroScript.lua", true))()
+    end,
+})
+
+local resonanceHubButton = BasketballZeroTab:CreateButton({ -- Unique variable name
+    Name = "Resonance Hub",
+    Callback = function()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/roscripts749/loader/refs/heads/main/loader", true))()
+    end,
+})
+
+local beamzzHubButton = BasketballZeroTab:CreateButton({ -- Unique variable name
+    Name = "Beamzz Hub",
+    Callback = function()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/HmizoBeamzz/BASKETBBAALALALALLA/refs/heads/main/aebee82462efd758.txt", true))()
+    end,
+})
+
+local legendHubButton = BasketballZeroTab:CreateButton({ -- Unique variable name
+    Name = "Legend Hub",
+    Callback = function()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/IAmJamal10/Scripts/refs/heads/main/Zero", true))()
+    end,
+})
+
+local BrookhavenTab = Window:CreateTab("Brookhaven", nil) -- Title, Image (Renamed from "example")
+
+local salvatoreButton1 = BrookhavenTab:CreateButton({ -- Unique variable name
+    Name = "Salvatore 1", -- Renamed to differentiate
+    Callback = function()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/RFR-R1CH4RD/Loader/main/Salvatore.lua", true))()
+    end,
+})
+
+local iceHubButton = BrookhavenTab:CreateButton({ -- Unique variable name
+    Name = "Ice Hub",
+    Callback = function()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/Waza80/scripts-new/main/IceHubBrookhaven.lua", true))()
+    end,
+})
+
+local spHubButton = BrookhavenTab:CreateButton({ -- Unique variable name
+    Name = "SP Hub",
+    Callback = function()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/as6cd0/SP_Hub/refs/heads/main/Brookhaven", true))()
+    end,
+})
+
+local chaosHubButton = BrookhavenTab:CreateButton({ -- Unique variable name
+    Name = "Chaos Hub",
+    Callback = function()
+        loadstring(game:HttpGet("https://pastebin.com/raw/58jNvV3h", true))()
+    end,
+})
+
+local realHubButton = BrookhavenTab:CreateButton({ -- Unique variable name
+    Name = "Real Hub",
+    Callback = function()
+        loadstring(game:HttpGet("https://pastebin.com/raw/EYs5T7Yg", true))()
+    end,
+})
+
+local unamedBrookhavenButton = BrookhavenTab:CreateButton({ -- Unique variable name
+    Name = "Unamed",
+    Callback = function()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/ScriptBrv/BROKEY/refs/heads/main/BROKEY.md", true))()
+    end,
+})
+
+local mangoHubButton = BrookhavenTab:CreateButton({ -- Unique variable name
+    Name = "Mango Hub",
+    Callback = function()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/rogelioajax/lua/main/MangoHub", true))()
+    end,
+})
+
+local flyScriptButton = BrookhavenTab:CreateButton({ -- Unique variable name
+    Name = "Fly Script",
+    Callback = function()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/mikeexc/Dsc-Mike-Fly-Gui/main/Fly%20Gui", true))()
+    end,
+})
+
+local stationHubButton = BrookhavenTab:CreateButton({ -- Unique variable name
+    Name = "Station Hub",
+    Callback = function()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/Alexcirer/Alexcirer/refs/heads/main/Station", true))()
+    end,
+})
+
+local hyz0rHubButton = BrookhavenTab:CreateButton({ -- Unique variable name
+    Name = "Hyz0r Hub",
+    Callback = function()
+        loadstring(game:HttpGet('https://raw.githubusercontent.com/Hyz0r-Dev404/Hyz0/refs/heads/main/Working%25Hyz0r-Hub.md', true))();
+    end,
+})
+
+local speedWaveButton = BrookhavenTab:CreateButton({ -- Unique variable name
+    Name = "Speed Wave [its in arabic]",
+    Callback = function()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/speedwavevip/scriptspeed/refs/heads/main/Brookhaven_lraq", true))()
+    end,
+})
+
+local yHubBrookhavenButton = BrookhavenTab:CreateButton({ -- Unique variable name
+    Name = "YHUB",
+    Callback = function()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/Luarmor123/community-Y-HUB/refs/heads/main/YHUB%20ENGLISH", true))()
+    end,
+})
+
+local autofarmButton = BrookhavenTab:CreateButton({ -- Unique variable name
+    Name = "Autofarm",
+    Callback = function()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/r4mpage4/BrookHavenRP/refs/heads/main/AutoFarmCandy.lua", true))()
+    end,
+})
+
+local imperialHubButton = BrookhavenTab:CreateButton({ -- Unique variable name
+    Name = "Imperial Hub V1",
+    Callback = function()
+        loadstring(game:HttpGet('https://raw.githubusercontent.com/Trev0rZ/LoaderM/refs/heads/main/ImperiaHub-lWorking.lua', true))()
+    end,
+})
+
+local sanderXButton = BrookhavenTab:CreateButton({ -- Unique variable name
+    Name = "Sander X",
+    Callback = function()
+        loadstring(game:HttpGet('https://raw.githubusercontent.com/kigredns/SanderXV4.2.2/refs/heads/main/NormalSS.lua', true))()
+    end,
+})
+
+local dmitryHubButton = BrookhavenTab:CreateButton({ -- Unique variable name
+    Name = "Dmitry Hub",
+    Callback = function()
+        loadstring(game:HttpGet("https://pastebin.com/raw/GYyWRWHJ", true))();
+    end,
+})
+
+local salvatoreButton2 = BrookhavenTab:CreateButton({ -- Unique variable name (differentiated from the first)
+    Name = "Salvatore 2",
+    Callback = function()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/RFRR1CH4RD/Loader/main/Salvatore.lua", true))()
+    end,
+})
+
+local julHubButton = BrookhavenTab:CreateButton({ -- Unique variable name
+    Name = "Jul Hub",
+    Callback = function()
+        loadstring(game:HttpGet('https://raw.githubusercontent.com/Jfdedit3/z4trox-hub-v1/main/z4trox%20hub', true))()
+    end,
+})
